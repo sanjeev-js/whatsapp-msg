@@ -20,39 +20,36 @@ const sendMsg = async () => {
 
         const checkContact = {
             method: 'POST',
-            url: "https://1201.unomok.com/v1/contacts/",
+            url: "url/v1/contacts/",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': process.env.auth;
+                'Authorization': "Bearer token"
             },
             data: {
                 "blocking": "wait",
                 "contacts": [
-                    `+${readedFile[i].mobile}`
+                    `+91${readedFile[i].mobile}`
                 ],
                 "force_check": false
             }
         }
 
         const [err, res] = await asyncWrap(axios(checkContact));
-        if (err) {
-            continue;
-        }
         if (res) {
-            console.log('contact response', res.data);
+            console.log(res.data)
             const options = {
                 method: 'POST',
-                url: "https://1201.unomok.com/v1/messages/",
+                url: "url/v1/messages/",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': process.env.auth
+                    'Authorization': "Bearer token"
                 },
                 data: {
-                    "to": readedFile[i].mobile,
+                    "to": `91${readedFile[i].mobile}`,
                     "type": "template",
                     "template": {
-                        "namespace": "7d84b42d_385e_4bc8_98fe_5641f04d0bbd",
-                        "name": "udaan_2",
+                        "namespace": "namespace",
+                        "name": "template name",
                         "language": {
                             "policy": "deterministic",
                             "code": "en_US"
@@ -63,7 +60,11 @@ const sendMsg = async () => {
                                 "parameters": [
                                     {
                                         "type": "text",
-                                        "text": `${readedFile[i].point}, https://drive.google.com/file/d/1uQDQZWyovhNj8K8NV9Ya8dLXrHd--TFT/view?usp=sharing`
+                                        "text": `${readedFile[i].amount}`
+                                    },
+                                    {
+                                      "type" :"text",
+                                      "text" :`${readedFile[i].id}`
                                     },
                                 ]
                             }
@@ -78,8 +79,9 @@ const sendMsg = async () => {
                 console.log(result.data);
             }
         }
-        console.log("Ending With", i)
     }
+    console.log("Ending With", i)
+    // }
 }
 
 sendMsg()
